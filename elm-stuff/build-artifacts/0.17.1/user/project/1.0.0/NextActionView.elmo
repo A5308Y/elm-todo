@@ -1,0 +1,51 @@
+var _user$project$NextActionView$nextActionStyle = function (nextAction) {
+	return nextAction.done ? _elm_lang$core$Native_List.fromArray(
+		[
+			{ctor: '_Tuple2', _0: 'color', _1: 'green'}
+		]) : _elm_lang$core$Native_List.fromArray(
+		[
+			{ctor: '_Tuple2', _0: 'color', _1: 'red'}
+		]);
+};
+var _user$project$NextActionView$nextAction = function (nextAction) {
+	return A2(
+		_elm_lang$html$Html$li,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$style(
+				_user$project$NextActionView$nextActionStyle(nextAction))
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html$text(nextAction.name),
+				A2(
+				_elm_lang$html$Html$button,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Events$onClick(
+						_user$project$Types$SetAsDone(nextAction.id))
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('Done')
+					])),
+				A2(
+				_elm_lang$html$Html$button,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Events$onClick(
+						_user$project$Types$Edit(nextAction.id))
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('Edit')
+					]))
+			]));
+};
+var _user$project$NextActionView$nextActionList = function (nextActions) {
+	return A2(
+		_elm_lang$html$Html$ul,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		A2(_elm_lang$core$List$map, _user$project$NextActionView$nextAction, nextActions));
+};

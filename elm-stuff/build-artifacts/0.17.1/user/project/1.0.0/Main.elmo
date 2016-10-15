@@ -1,0 +1,203 @@
+var _user$project$Main$selectOptions = F2(
+	function (projectIdForNewNextAction, projects) {
+		return A2(
+			_elm_lang$core$List$map,
+			function (project) {
+				return A2(
+					_elm_lang$html$Html$option,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$selected(
+							_elm_lang$core$Native_Utils.eq(
+								_elm_lang$core$Maybe$Just(project.id),
+								projectIdForNewNextAction)),
+							_elm_lang$html$Html_Attributes$value(
+							_elm_lang$core$Basics$toString(project.id))
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html$text(project.name)
+						]));
+			},
+			projects);
+	});
+var _user$project$Main$view = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$h1,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('My first own app')
+					])),
+				_user$project$NextActionView$nextActionList(model.nextActions),
+				A2(
+				_elm_lang$html$Html$form,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Events$onSubmit(_user$project$Types$AddNextAction)
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$input,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Events$onInput(_user$project$Types$SetNewNextActionName),
+								_elm_lang$html$Html_Attributes$value(model.newNextActionName)
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[])),
+						A2(
+						_elm_lang$html$Html$select,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Events$onInput(_user$project$Types$SetProjectIdForNewNextAction),
+								_elm_lang$html$Html_Attributes$value(
+								_elm_lang$core$Basics$toString(model.projectIdForNewNextAction))
+							]),
+						A2(_user$project$Main$selectOptions, model.projectIdForNewNextAction, model.projects)),
+						A2(
+						_elm_lang$html$Html$button,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$type$('submit')
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text('Add NextAction')
+							]))
+					])),
+				A2(
+				_elm_lang$html$Html$form,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Events$onSubmit(_user$project$Types$AddProject)
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$input,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Events$onInput(_user$project$Types$SetNewProjectName),
+								_elm_lang$html$Html_Attributes$value(model.newProjectName)
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[])),
+						A2(
+						_elm_lang$html$Html$button,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$type$('submit')
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text('Add Project')
+							]))
+					])),
+				A2(_user$project$ProjectsView$projectList, model.projects, model.nextActions)
+			]));
+};
+var _user$project$Main$edit = F3(
+	function (selectedNextActionId, newName, nextAction) {
+		return _elm_lang$core$Native_Utils.eq(nextAction.id, selectedNextActionId) ? _elm_lang$core$Native_Utils.update(
+			nextAction,
+			{name: newName}) : nextAction;
+	});
+var _user$project$Main$setDone = F2(
+	function (selectedNextActionId, nextAction) {
+		return _elm_lang$core$Native_Utils.eq(nextAction.id, selectedNextActionId) ? _elm_lang$core$Native_Utils.update(
+			nextAction,
+			{done: true}) : nextAction;
+	});
+var _user$project$Main$update = F2(
+	function (msg, model) {
+		var newProjectId = _elm_lang$core$List$length(model.projects);
+		var newProject = A3(_user$project$Types$Project, newProjectId, model.newProjectName, false);
+		var newNextActionId = _elm_lang$core$List$length(model.nextActions);
+		var newNextAction = A4(_user$project$Types$NextAction, newNextActionId, model.newNextActionName, false, model.projectIdForNewNextAction);
+		var _p0 = msg;
+		switch (_p0.ctor) {
+			case 'AddNextAction':
+				return _elm_lang$core$Native_Utils.update(
+					model,
+					{
+						nextActions: A2(_elm_lang$core$List_ops['::'], newNextAction, model.nextActions),
+						newNextActionName: ''
+					});
+			case 'AddProject':
+				return _elm_lang$core$Native_Utils.update(
+					model,
+					{
+						projects: A2(_elm_lang$core$List_ops['::'], newProject, model.projects),
+						newProjectName: ''
+					});
+			case 'SetAsDone':
+				return _elm_lang$core$Native_Utils.update(
+					model,
+					{
+						nextActions: A2(
+							_elm_lang$core$List$map,
+							_user$project$Main$setDone(_p0._0),
+							model.nextActions)
+					});
+			case 'Edit':
+				return _elm_lang$core$Native_Utils.update(
+					model,
+					{
+						nextActions: A2(
+							_elm_lang$core$List$map,
+							A2(_user$project$Main$edit, _p0._0, model.newNextActionName),
+							model.nextActions),
+						newNextActionName: ''
+					});
+			case 'SetNewNextActionName':
+				return _elm_lang$core$Native_Utils.update(
+					model,
+					{newNextActionName: _p0._0});
+			case 'SetProjectIdForNewNextAction':
+				return _elm_lang$core$Native_Utils.update(
+					model,
+					{
+						projectIdForNewNextAction: _elm_lang$core$Maybe$Just(
+							A2(
+								_elm_lang$core$Result$withDefault,
+								0,
+								_elm_lang$core$String$toInt(_p0._0)))
+					});
+			default:
+				return _elm_lang$core$Native_Utils.update(
+					model,
+					{newProjectName: _p0._0});
+		}
+	});
+var _user$project$Main$initModel = {
+	nextActions: _elm_lang$core$Native_List.fromArray(
+		[
+			A4(
+			_user$project$Types$NextAction,
+			0,
+			'Alt',
+			false,
+			_elm_lang$core$Maybe$Just(0))
+		]),
+	newNextActionName: '',
+	projectIdForNewNextAction: _elm_lang$core$Maybe$Nothing,
+	newProjectName: '',
+	projects: _elm_lang$core$Native_List.fromArray(
+		[
+			A3(_user$project$Types$Project, 0, 'Erstes Project', false),
+			A3(_user$project$Types$Project, 1, 'Zweites Project', false)
+		])
+};
+var _user$project$Main$main = {
+	main: _elm_lang$html$Html_App$beginnerProgram(
+		{model: _user$project$Main$initModel, view: _user$project$Main$view, update: _user$project$Main$update})
+};

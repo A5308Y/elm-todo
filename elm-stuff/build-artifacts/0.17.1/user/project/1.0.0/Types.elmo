@@ -1,0 +1,29 @@
+var _user$project$Types$Model = F5(
+	function (a, b, c, d, e) {
+		return {nextActions: a, projects: b, newNextActionName: c, projectIdForNewNextAction: d, newProjectName: e};
+	});
+var _user$project$Types$NextAction = F4(
+	function (a, b, c, d) {
+		return {id: a, name: b, done: c, projectId: d};
+	});
+var _user$project$Types$Project = F3(
+	function (a, b, c) {
+		return {id: a, name: b, done: c};
+	});
+var _user$project$Types$SetNewProjectName = function (a) {
+	return {ctor: 'SetNewProjectName', _0: a};
+};
+var _user$project$Types$SetProjectIdForNewNextAction = function (a) {
+	return {ctor: 'SetProjectIdForNewNextAction', _0: a};
+};
+var _user$project$Types$SetNewNextActionName = function (a) {
+	return {ctor: 'SetNewNextActionName', _0: a};
+};
+var _user$project$Types$Edit = function (a) {
+	return {ctor: 'Edit', _0: a};
+};
+var _user$project$Types$SetAsDone = function (a) {
+	return {ctor: 'SetAsDone', _0: a};
+};
+var _user$project$Types$AddProject = {ctor: 'AddProject'};
+var _user$project$Types$AddNextAction = {ctor: 'AddNextAction'};

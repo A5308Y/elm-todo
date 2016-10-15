@@ -1,0 +1,4 @@
+var _user$project$NextAction$NextAction = F3(
+	function (a, b, c) {
+		return {id: a, name: b, done: c};
+	});
