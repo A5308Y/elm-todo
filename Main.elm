@@ -7,7 +7,7 @@ import Html.Attributes exposing (..)
 import NextActionView exposing (..)
 import ProjectsView exposing (..)
 import Types exposing (..)
-import Json.Decode as Json
+import String
 
 
 main : Program Never
@@ -64,7 +64,7 @@ update msg model =
                 { model | newNextActionName = givenName }
 
             SetProjectIdForNewNextAction projectId ->
-                { model | projectIdForNewNextAction = Just projectId }
+                { model | projectIdForNewNextAction = Just (Result.withDefault 0 (String.toInt projectId)) }
 
             SetNewProjectName givenName ->
                 { model | newProjectName = givenName }
@@ -94,7 +94,7 @@ view model =
         , Html.form [ onSubmit AddNextAction ]
             [ input [ onInput SetNewNextActionName, value model.newNextActionName ] []
             , select
-                [ onSelect SetProjectIdForNewNextAction ]
+                [ onInput SetProjectIdForNewNextAction ]
                 (List.map (\project -> option [ value (toString project.id) ] [ text project.name ]) model.projects)
             , button [ type' "submit" ] [ text "Add NextAction" ]
             ]
@@ -103,14 +103,5 @@ view model =
             , button [ type' "submit" ] [ text "Add Project" ]
             ]
         , projectList model.projects model.nextActions
+        , div [] [ text (toString model) ]
         ]
-
-
-targetSelectedIndex : Json.Decoder Int
-targetSelectedIndex =
-    Json.at [ "target", "selectedIndex" ] Json.int
-
-
-onSelect : (Int -> msg) -> Html.Attribute msg
-onSelect msg =
-    on "change" (Json.map msg targetSelectedIndex)
