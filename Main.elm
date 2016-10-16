@@ -49,7 +49,11 @@ update msg model =
                 { model | nextActions = newNextAction :: model.nextActions, newNextActionName = "" }
 
             AddProject ->
-                { model | projects = newProject :: model.projects, newProjectName = "" }
+                { model
+                    | projects = newProject :: model.projects
+                    , newProjectName = ""
+                    , projectIdForNewNextAction = Just newProjectId
+                }
 
             SetAsDone selectedNextActionId ->
                 { model | nextActions = List.map (setDone selectedNextActionId) model.nextActions }
