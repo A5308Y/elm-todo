@@ -5,9 +5,9 @@ import Html exposing (..)
 import Html.Events exposing (..)
 import Html.Attributes exposing (..)
 import NextActionView exposing (..)
-import String
 import ProjectsView exposing (..)
 import Types exposing (..)
+import Json.Decode as Json
 
 
 main : Program Never
@@ -21,11 +21,11 @@ main =
 
 initModel : Model
 initModel =
-    { nextActions = [ NextAction 0 "Alt" False (Just 0) ]
+    { nextActions = []
     , newNextActionName = ""
     , projectIdForNewNextAction = Nothing
     , newProjectName = ""
-    , projects = [ Project 0 "Erstes Project" False, Project 1 "Zweites Project" False ]
+    , projects = []
     }
 
 
@@ -64,7 +64,7 @@ update msg model =
                 { model | newNextActionName = givenName }
 
             SetProjectIdForNewNextAction projectId ->
-                { model | projectIdForNewNextAction = Just (Result.withDefault 0 (String.toInt projectId)) }
+                { model | projectIdForNewNextAction = Just projectId }
 
             SetNewProjectName givenName ->
                 { model | newProjectName = givenName }
@@ -94,10 +94,8 @@ view model =
         , Html.form [ onSubmit AddNextAction ]
             [ input [ onInput SetNewNextActionName, value model.newNextActionName ] []
             , select
-                [ onInput SetProjectIdForNewNextAction
-                , value (toString model.projectIdForNewNextAction)
-                ]
-                (selectOptions model.projectIdForNewNextAction model.projects)
+                [ onSelect SetProjectIdForNewNextAction ]
+                (List.map (\project -> option [ value (toString project.id) ] [ text project.name ]) model.projects)
             , button [ type' "submit" ] [ text "Add NextAction" ]
             ]
         , Html.form [ onSubmit AddProject ]
@@ -108,8 +106,11 @@ view model =
         ]
 
 
-selectOptions : Maybe Int -> List Project -> List (Html Msg)
-selectOptions projectIdForNewNextAction projects =
-    projects
-        |> List.map
-            (\project -> option [ selected (Just project.id == projectIdForNewNextAction), value (toString project.id) ] [ text project.name ])
+targetSelectedIndex : Json.Decoder Int
+targetSelectedIndex =
+    Json.at [ "target", "selectedIndex" ] Json.int
+
+
+onSelect : (Int -> msg) -> Html.Attribute msg
+onSelect msg =
+    on "change" (Json.map msg targetSelectedIndex)

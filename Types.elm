@@ -16,7 +16,7 @@ type Msg
     | SetAsDone Int
     | Edit Int
     | SetNewNextActionName String
-    | SetProjectIdForNewNextAction String
+    | SetProjectIdForNewNextAction Int
     | SetNewProjectName String
 
 
